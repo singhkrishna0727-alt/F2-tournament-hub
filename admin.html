@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FFTournament Hub Admin</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><h1>🛠️ Admin Dashboard</h1></header>
+<main>
+<section class="card">
+<h2>Add Tournament</h2>
+<form id="tournamentForm">
+<input id="name" placeholder="Tournament Name" required>
+<input id="date" type="datetime-local" required>
+<input id="entryFee" type="number" placeholder="Entry Fee" required>
+<input id="prize" placeholder="Prize Pool" required>
+<input id="roomId" placeholder="Room ID (optional)">
+<button type="submit">Add Tournament</button>
+</form>
+</section>
+<section class="card">
+<h2>Registrations</h2>
+<div id="registrations">Loading...</div>
+</section>
+</main>
+<script type="module" src="admin.js"></script>
+</body>
+</html>

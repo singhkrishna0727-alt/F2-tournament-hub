@@ -1,44 +1,13 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    function signedIn() { return request.auth != null; }
-    function admin() {
-      return signedIn() &&
-        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
-    }
-
-    match /users/{uid} {
-      allow create: if signedIn() && request.auth.uid == uid;
-      allow read: if signedIn() && (request.auth.uid == uid || admin());
-      allow update: if admin() || (signedIn() && request.auth.uid == uid &&
-        request.resource.data.role == resource.data.role);
-      allow delete: if admin();
-    }
-
     match /tournaments/{id} {
       allow read: if true;
-      allow create, update, delete: if admin();
+      allow write: if false;
     }
-
     match /registrations/{id} {
-      allow create: if signedIn() && request.resource.data.uid == request.auth.uid;
-      allow read: if signedIn() && (resource.data.uid == request.auth.uid || admin());
-      allow update, delete: if admin();
-    }
-
-    match /rooms/{id} {
-      allow read: if true;
-      allow create, update, delete: if admin();
-    }
-
-    match /results/{id} {
-      allow read: if true;
-      allow create, update, delete: if admin();
-    }
-
-    match /notices/{id} {
-      allow read: if true;
-      allow create, update, delete: if admin();
+      allow create: if true;
+      allow read, update, delete: if false;
     }
   }
 }

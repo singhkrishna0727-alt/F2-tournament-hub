@@ -1,103 +1,32 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>F2 Tournament Hub</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FFTournament Hub</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="topbar">
-  <div class="brand">F2 <span>Tournament Hub</span></div>
-  <nav>
-    <a href="#home">Home</a><a href="#tournaments">Tournaments</a>
-    <a href="#register">Register</a><a href="#rooms">Rooms</a><a href="#results">Results</a>
-    <a href="#login">Login</a><a href="#admin" id="adminNav" class="hidden">Admin</a>
-  </nav>
-</header>
-
+<header><h1>🔥 FFTournament Hub</h1><p>Free Fire Tournament Registration</p></header>
 <main>
-<section id="home" class="hero">
-  <div><p class="tag">FREE FIRE TOURNAMENT PLATFORM</p>
-  <h1>Play. Compete. Win.</h1>
-  <p>Real-time tournament registration, room information, results and an admin dashboard powered by Firebase.</p>
-  <a class="btn" href="#tournaments">View Tournaments</a></div>
+<section class="card">
+<h2>Available Tournaments</h2>
+<div id="tournaments"><p>Loading tournaments...</p></div>
 </section>
-
-<section id="tournaments" class="section"><h2>Upcoming Tournaments</h2><div id="tournamentList" class="grid"></div></section>
-
-<section id="register" class="section card">
-  <h2>Player / Squad Registration</h2>
-  <p class="muted">Login first, then submit your registration.</p>
-  <form id="registrationForm">
-    <label>Tournament<select id="regTournament" required></select></label>
-    <label>Squad / Team Name<input id="teamName" required maxlength="60"></label>
-    <label>Captain Name<input id="captainName" required maxlength="60"></label>
-    <label>Free Fire UID<input id="uid" required maxlength="30"></label>
-    <label>Phone / Contact<input id="phone" required maxlength="20"></label>
-    <button class="btn" type="submit">Submit Registration</button>
-  </form>
-  <p id="regMsg" class="message"></p>
-</section>
-
-<section id="rooms" class="section"><h2>Room Information</h2><div id="roomList" class="grid"></div></section>
-<section id="results" class="section"><h2>Results / Leaderboard</h2><div id="resultList" class="grid"></div></section>
-
-<section id="login" class="section card">
-  <h2>Login / Create Account</h2>
-  <form id="authForm">
-    <label>Email<input id="email" type="email" required></label>
-    <label>Password<input id="password" type="password" minlength="6" required></label>
-    <div class="row"><button class="btn" type="submit">Login</button><button class="btn secondary" id="signupBtn" type="button">Create Account</button><button class="btn danger" id="logoutBtn" type="button">Logout</button></div>
-  </form>
-  <p id="authMsg" class="message"></p>
-</section>
-
-<section id="admin" class="section card hidden">
-  <h2>Admin Dashboard</h2>
-  <p id="adminStatus" class="message"></p>
-
-  <div class="adminBlock">
-    <h3>Add / Edit Tournament</h3>
-    <form id="tournamentForm">
-      <input id="tournamentId" type="hidden">
-      <label>Name<input id="tName" required maxlength="80"></label>
-      <label>Date & Time<input id="tDate" type="datetime-local" required></label>
-      <label>Entry Fee<input id="tFee" type="number" min="0" step="1" required></label>
-      <label>Prize Pool<input id="tPrize" required maxlength="40"></label>
-      <label>Status<select id="tStatus"><option>Open</option><option>Full</option><option>Closed</option></select></label>
-      <button class="btn" type="submit">Save Tournament</button>
-      <button class="btn secondary" id="cancelEdit" type="button">Clear</button>
-    </form>
-    <div id="adminTournaments"></div>
-  </div>
-
-  <div class="adminBlock">
-    <h3>Room / Result / Notice</h3>
-    <form id="roomForm">
-      <label>Tournament ID<input id="rTournamentId" required></label>
-      <label>Room ID<input id="roomId" required></label>
-      <label>Password<input id="roomPass" required></label>
-      <button class="btn" type="submit">Publish Room</button>
-    </form>
-    <form id="resultForm">
-      <label>Tournament ID<input id="resTournamentId" required></label>
-      <label>Team / Player<input id="resTeam" required></label>
-      <label>Position<input id="resPosition" type="number" min="1" required></label>
-      <label>Points<input id="resPoints" type="number" min="0" required></label>
-      <button class="btn" type="submit">Publish Result</button>
-    </form>
-    <form id="noticeForm">
-      <label>Notice<input id="noticeText" required maxlength="200"></label>
-      <button class="btn" type="submit">Publish Notice</button>
-    </form>
-  </div>
-
-  <div class="adminBlock"><h3>Registrations</h3><div id="registrationList"></div></div>
+<section class="card">
+<h2>Player / Squad Registration</h2>
+<form id="registrationForm">
+<input id="teamName" placeholder="Squad / Team Name" required>
+<input id="captain" placeholder="Captain Name" required>
+<input id="uid" placeholder="Free Fire UID" required>
+<input id="phone" placeholder="Mobile Number" required>
+<select id="tournament" required><option value="">Select Tournament</option></select>
+<button type="submit">Register Now</button>
+</form>
+<p id="message"></p>
 </section>
 </main>
-
-<footer>F2 Tournament Hub • Firebase powered</footer>
+<footer>© FFTournament Hub</footer>
 <script type="module" src="app.js"></script>
 </body>
 </html>
