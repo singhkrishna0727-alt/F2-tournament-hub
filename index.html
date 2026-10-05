@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#101827">
+<title>F2 Tournament Hub</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0b1120;color:#eef2ff}
+button,input,select{font:inherit}button{cursor:pointer}
+.nav{position:sticky;top:0;z-index:20;background:#111a2e;border-bottom:1px solid #26334f;padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:21px;font-weight:800;color:#6ea8ff}.menu{display:flex;gap:8px;flex-wrap:wrap}.menu button{background:transparent;color:#dbe5ff;border:0;padding:9px;border-radius:8px}.menu button:hover{background:#1d2a45}
+.container{max-width:1050px;margin:auto;padding:22px 16px}.hero{padding:34px 22px;border-radius:18px;background:linear-gradient(135deg,#17264a,#111a2e);border:1px solid #2a3a5e}.hero h1{font-size:38px;margin:0 0 10px}.hero p{color:#b9c5dd;line-height:1.6}.actions{display:flex;gap:10px;flex-wrap:wrap}.primary{background:#3478f6;color:#fff;border:0;padding:12px 17px;border-radius:10px;font-weight:700}.secondary{background:#1c2944;color:#fff;border:1px solid #334466;padding:12px 17px;border-radius:10px}
+.section{margin-top:24px}.section h2{margin-bottom:12px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}.card{background:#121c31;border:1px solid #293957;border-radius:14px;padding:17px}.card h3{margin:0 0 8px}.muted{color:#aab7d0}.tag{display:inline-block;padding:5px 8px;border-radius:7px;background:#20375f;color:#bcd4ff;font-size:12px;margin:3px 3px 3px 0}
+.form{max-width:600px;background:#121c31;border:1px solid #293957;border-radius:14px;padding:18px}.field{margin:12px 0}.field label{display:block;font-size:13px;color:#b7c3da;margin-bottom:6px}.field input,.field select{width:100%;padding:12px;background:#0c1425;color:#fff;border:1px solid #33425f;border-radius:9px;outline:none}.field input:focus,.field select:focus{border-color:#4d8dff}.notice{padding:12px;border-radius:9px;margin:10px 0;background:#18243b;color:#cbd7ef}.success{background:#123725;color:#aef0c4}.danger{background:#401d25;color:#ffc3cc}.hidden{display:none!important}.topline{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.tablewrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:650px}.table th,.table td{border-bottom:1px solid #293957;padding:10px;text-align:left}.table th{color:#9fb0cf;font-size:13px}.small{font-size:12px}.footer{text-align:center;color:#71809b;padding:35px 10px}
+.modal{position:fixed;inset:0;background:#0009;z-index:50;display:flex;align-items:center;justify-content:center;padding:15px}.modalbox{width:min(520px,100%);background:#121c31;border:1px solid #344666;border-radius:15px;padding:20px;max-height:90vh;overflow:auto}
+@media(max-width:650px){.hero h1{font-size:30px}.nav{align-items:flex-start;gap:8px;flex-direction:column}.menu{width:100%;overflow:auto;flex-wrap:nowrap}.menu button{white-space:nowrap}.container{padding:15px 12px}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="logo">🎮 F2 Tournament Hub</div>
+  <div class="menu">
+    <button onclick="show('home')">Home</button>
+    <button onclick="show('tournaments')">Tournaments</button>
+    <button onclick="show('register')">Register</button>
+    <button onclick="show('rooms')">Room Info</button>
+    <button onclick="show('results')">Results</button>
+    <button onclick="show('login')">Login</button>
+    <button onclick="show('admin')">Admin</button>
+  </div>
+</nav>
+
+<main class="container">
+<section id="home">
+  <div class="hero">
+    <h1>F2 Tournament Hub</h1>
+    <p>Free Fire tournament platform for player/team registration, tournament schedules, room information, results and leaderboard.</p>
+    <div class="actions">
+      <button class="primary" onclick="show('tournaments')">🏆 View Tournaments</button>
+      <button class="secondary" onclick="show('register')">📝 Register Now</button>
+    </div>
+  </div>
+  <div class="section grid">
+    <div class="card"><h3>📝 Easy Registration</h3><p class="muted">Register your squad and save your tournament entry.</p></div>
+    <div class="card"><h3>🔐 Player Login</h3><p class="muted">Demo account system using browser storage.</p></div>
+    <div class="card"><h3>🔑 Room Information</h3><p class="muted">Room ID and password can be published for registered players.</p></div>
+    <div class="card"><h3>🏅 Results</h3><p class="muted">View tournament winners, points and leaderboard.</p></div>
+  </div>
+</section>
+
+<section id="tournaments" class="hidden">
+  <div class="topline"><h2>🏆 Tournaments</h2><button class="primary" onclick="show('register')">Register</button></div>
+  <div id="tournamentList" class="grid"></div>
+</section>
+
+<section id="register" class="hidden">
+  <h2>📝 Player / Team Registration</h2>
+  <div id="regMessage"></div>
+  <form class="form" onsubmit="registerTeam(event)">
+    <div class="field"><label>Tournament</label><select id="regTournament" required></select></div>
+    <div class="field"><label>Team / Squad Name</label><input id="teamName" required placeholder="Enter squad name"></div>
+    <div class="field"><label>Captain Name</label><input id="captain" required placeholder="Captain name"></div>
+    <div class="field"><label>Free Fire UID</label><input id="uid" required placeholder="Player UID"></div>
+    <div class="field"><label>WhatsApp / Contact</label><input id="phone" required placeholder="Contact number"></div>
+    <div class="field"><label>Player 2 UID</label><input id="p2" placeholder="Optional"></div>
+    <div class="field"><label>Player 3 UID</label><input id="p3" placeholder="Optional"></div>
+    <div class="field"><label>Player 4 UID</label><input id="p4" placeholder="Optional"></div>
+    <button class="primary" type="submit">Submit Registration</button>
+  </form>
+</section>
+
+<section id="rooms" class="hidden">
+  <div class="topline"><h2>🔑 Room ID & Password</h2><span class="tag">For published matches</span></div>
+  <div id="roomList" class="grid"></div>
+</section>
+
+<section id="results" class="hidden">
+  <h2>🏅 Leaderboard / Results</h2>
+  <div id="resultList" class="grid"></div>
+</section>
+
+<section id="login" class="hidden">
+  <h2>🔐 Login / Signup</h2>
+  <div id="loginMessage"></div>
+  <form class="form" onsubmit="login(event)">
+    <div class="field"><label>Email</label><input id="email" type="email" required placeholder="you@example.com"></div>
+    <div class="field"><label>Password</label><input id="password" type="password" required placeholder="Password"></div>
+    <button class="primary" type="submit">Login</button>
+    <button class="secondary" type="button" onclick="signup()">Create Demo Account</button>
+  </form>
+</section>
+
+<section id="admin" class="hidden">
+  <h2>👨‍💼 Admin Panel</h2>
+  <div class="notice">Demo admin panel. Data is stored only in this browser. Do not use this client-side demo for real payments or private credentials.</div>
+  <div class="grid">
+    <div class="card">
+      <h3>Add Tournament</h3>
+      <form onsubmit="addTournament(event)">
+        <div class="field"><label>Name</label><input id="aName" required placeholder="F2 Solo / Squad Cup"></div>
+        <div class="field"><label>Date</label><input id="aDate" type="date" required></div>
+        <div class="field"><label>Entry Fee</label><input id="aFee" required placeholder="₹100"></div>
+        <div class="field"><label>Prize Pool</label><input id="aPrize" required placeholder="₹1,000"></div>
+        <button class="primary">Add Tournament</button>
+      </form>
+    </div>
+    <div class="card">
+      <h3>Publish Room</h3>
+      <form onsubmit="addRoom(event)">
+        <div class="field"><label>Tournament</label><select id="aRoomTournament"></select></div>
+        <div class="field"><label>Room ID</label><input id="aRoomId" required></div>
+        <div class="field"><label>Password</label><input id="aRoomPass" required></div>
+        <button class="primary">Publish Room</button>
+      </form>
+    </div>
+  </div>
+  <div class="section">
+    <h3>Registrations</h3>
+    <div class="tablewrap"><table class="table"><thead><tr><th>Tournament</th><th>Team</th><th>Captain</th><th>UID</th><th>Contact</th></tr></thead><tbody id="regTable"></tbody></table></div>
+  </div>
+</section>
+</main>
+
+<div id="modal" class="modal hidden" onclick="closeModal(event)">
+  <div class="modalbox" onclick="event.stopPropagation()">
+    <div class="topline"><h3 id="modalTitle"></h3><button class="secondary" onclick="hideModal()">Close</button></div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<footer class="footer">F2 Tournament Hub • Demo website • Mobile friendly</footer>
+
+<script>
+const defaultTournaments=[
+ {id:1,name:"F2 Squad Championship",date:"2026-10-11",fee:"₹100",prize:"₹1,000",status:"Open"},
+ {id:2,name:"F2 Free Fire Cup",date:"2026-10-18",fee:"₹80",prize:"₹800",status:"Open"}
+];
+const get=(k,f)=>JSON.parse(localStorage.getItem(k)||"null")||f;
+let tournaments=get("f2_tournaments",defaultTournaments);
+let registrations=get("f2_registrations",[]);
+let rooms=get("f2_rooms",[
+ {tid:1,room:"12345678",pass:"F2@2026",time:"12:00 PM"},
+]);
+let results=get("f2_results",[
+ {tid:1,place:"1st",team:"Example Squad",points:"120",prize:"₹500"},
+ {tid:1,place:"2nd",team:"Runner Squad",points:"95",prize:"₹300"},
+ {tid:1,place:"3rd",team:"Third Squad",points:"80",prize:"₹200"}
+]);
+
+function save(){localStorage.setItem("f2_tournaments",JSON.stringify(tournaments));localStorage.setItem("f2_registrations",JSON.stringify(registrations));localStorage.setItem("f2_rooms",JSON.stringify(rooms));localStorage.setItem("f2_results",JSON.stringify(results))}
+function show(id){
+ document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
+ document.getElementById(id).classList.remove("hidden");
+ if(id==="tournaments")renderTournaments();
+ if(id==="register")fillTournamentSelect();
+ if(id==="rooms")renderRooms();
+ if(id==="results")renderResults();
+ if(id==="admin"){fillTournamentSelects();renderRegs();}
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function dateText(d){return new Date(d+"T00:00:00").toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"})}
+function renderTournaments(){
+ document.getElementById("tournamentList").innerHTML=tournaments.map(t=>`
+ <div class="card"><span class="tag">${t.status}</span><h3>${t.name}</h3>
+ <p class="muted">📅 ${dateText(t.date)}<br>💰 Entry: ${t.fee}<br>🏆 Prize: ${t.prize}</p>
+ <button class="primary" onclick="openTournament(${t.id})">View & Register</button></div>`).join("");
+}
+function fillTournamentSelect(){
+ document.getElementById("regTournament").innerHTML=tournaments.map(t=>`<option value="${t.id}">${t.name} — ${t.fee}</option>`).join("");
+}
+function fillTournamentSelects(){
+ const x=tournaments.map(t=>`<option value="${t.id}">${t.name}</option>`).join("");
+ document.getElementById("aRoomTournament").innerHTML=x;
+ fillTournamentSelect();
+}
+function openTournament(id){
+ const t=tournaments.find(x=>x.id===id);
+ document.getElementById("modalTitle").textContent=t.name;
+ document.getElementById("modalBody").innerHTML=`<p>📅 ${dateText(t.date)}</p><p>💰 Entry Fee: <b>${t.fee}</b></p><p>🏆 Prize Pool: <b>${t.prize}</b></p><p>Status: <b>${t.status}</b></p><button class="primary" onclick="hideModal();show('register');document.getElementById('regTournament').value='${t.id}'">Register for this tournament</button>`;
+ document.getElementById("modal").classList.remove("hidden");
+}
+function hideModal(){document.getElementById("modal").classList.add("hidden")}
+function closeModal(e){if(e.target.id==="modal")hideModal()}
+function registerTeam(e){
+ e.preventDefault();
+ const tid=+document.getElementById("regTournament").value;
+ const t=tournaments.find(x=>x.id===tid);
+ registrations.push({tid,team:teamName.value,captain:captain.value,uid:uid.value,phone:phone.value,p2:p2.value,p3:p3.value,p4:p4.value,date:new Date().toLocaleString()});
+ save();
+ document.getElementById("regMessage").innerHTML='<div class="notice success">✅ Registration submitted successfully. Your team has been registered for '+t.name+'.</div>';
+ e.target.reset();fillTournamentSelect();document.getElementById("regTournament").value=tid;
+}
+function renderRooms(){
+ document.getElementById("roomList").innerHTML=rooms.length?rooms.map(r=>{let t=tournaments.find(x=>x.id===r.tid);return `<div class="card"><h3>${t?t.name:"Tournament"}</h3><p>🕐 ${r.time||"Match time"}</p><p>Room ID: <b>${r.room}</b></p><p>Password: <b>${r.pass}</b></p><button class="secondary" onclick="navigator.clipboard&&navigator.clipboard.writeText('${r.room}')">Copy Room ID</button></div>`}).join(""):'<div class="notice">No room information published yet.</div>';
+}
+function renderResults(){
+ document.getElementById("resultList").innerHTML=results.map(r=>{let t=tournaments.find(x=>x.id===r.tid);return `<div class="card"><span class="tag">${r.place}</span><h3>${r.team}</h3><p class="muted">${t?t.name:"Tournament"}<br>Points: <b>${r.points}</b><br>Prize: <b>${r.prize}</b></p></div>`}).join("");
+}
+function signup(){
+ const e=document.getElementById("email").value,p=document.getElementById("password").value;
+ if(!e||!p){document.getElementById("loginMessage").innerHTML='<div class="notice danger">Enter email and password first.</div>';return}
+ localStorage.setItem("f2_user",JSON.stringify({email:e,password:p}));
+ document.getElementById("loginMessage").innerHTML='<div class="notice success">Demo account created. You can now login.</div>';
+}
+function login(e){
+ e.preventDefault();const u=get("f2_user",null);
+ const em=document.getElementById("email").value,p=document.getElementById("password").value;
+ document.getElementById("loginMessage").innerHTML=(u&&u.email===em&&u.password===p)?'<div class="notice success">✅ Login successful.</div>':'<div class="notice danger">Login failed. Create the demo account first.</div>';
+}
+function addTournament(e){
+ e.preventDefault();
+ tournaments.push({id:Date.now(),name:aName.value,date:aDate.value,fee:aFee.value,prize:aPrize.value,status:"Open"});
+ save();e.target.reset();fillTournamentSelects();renderTournaments();alert("Tournament added"); 
+}
+function addRoom(e){
+ e.preventDefault();rooms.push({tid:+aRoomTournament.value,room:aRoomId.value,pass:aRoomPass.value,time:"Match time"});save();e.target.reset();renderRooms();alert("Room published");
+}
+function renderRegs(){
+ document.getElementById("regTable").innerHTML=registrations.length?registrations.map(r=>{let t=tournaments.find(x=>x.id===r.tid);return `<tr><td>${t?t.name:"-"}</td><td>${r.team}</td><td>${r.captain}</td><td>${r.uid}</td><td>${r.phone}</td></tr>`}).join(""):'<tr><td colspan="5">No registrations yet.</td></tr>';
+}
+renderTournaments();
+</script>
+</body>
+</html>
