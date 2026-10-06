@@ -16,3 +16,12 @@
 - `firebase-config.js` — Firebase configuration
 
 IMPORTANT: The sample admin page is not secure authentication. Before using it publicly, add Firebase Authentication and proper admin-only Firestore security rules.
+
+
+## Firebase connection
+1. Open `firebase-config.js` and paste the Firebase Web App config from Firebase Console.
+2. Upload all files to the same GitHub Pages folder.
+3. Firestore collection: `tournaments`; registration collection: `registrations`.
+4. The player page reads tournament fields including `name`, `mode`, `date`, `time`, `slots`, `prize1`, `prize2`, `prize3`, and `prize4to6`.
+5. This version does not collect entry-fee payments.
+6. Before public use, add Firebase Authentication and restrictive Firestore security rules for admin access.
